@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #10b981; /* Emerald Green for trust */
+            --bg: #0f172a;
+            --glass: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .instruction-box {
+            background: rgba(16, 185, 129, 0.05);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .lang-text {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .lang-text:last-child { margin-bottom: 0; }
+
+        .email-highlight {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        button {
+            background: var(--primary);
+            color: #064e3b;
+            padding: 16px 32px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.1);
+            box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.4);
+        }
+
+        button:active { transform: translateY(-1px); }
+
+        .img-container {
+            margin-top: 30px;
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            border-radius: 16px;
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .img-container.active {
+            max-height: 600px;
+            opacity: 1;
+            transform: translateY(0);
+            padding: 10px;
+        }
+
+        img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+            border: 2px solid var(--border);
+        }
+
+        /* Pulsing hint for the email */
+        .hint {
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-top: 20px;
+            font-style: italic;
+        }
+        .ref{
+            color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-card">
+        <h2>Verification Portal</h2>
+
+        <div class="instruction-box">
+            <span class="lang-text">
+                🇬🇧 Send screenshot to <span class="email-highlight">Google Form</span> with your ID and Loan Date to finalize deletion.
+                <a class="ref" href="https://docs.google.com/forms/d/e/1FAIpQLSe5e8l81YlQABe9aYN8GLx5-WyDvBC8uH_EDU0fN0BlIYL0AA/viewform?usp=publish-editor">Add Details Here</a>
+            </span>
+            <span class="lang-text">
+                🇮🇳 पेमेंटचा स्क्रीनशॉट, ID आणि तारीख <span class="email-highlight">Google Form</span> वर पाठवा.
+                <a class="ref" href="https://docs.google.com/forms/d/e/1FAIpQLSe5e8l81YlQABe9aYN8GLx5-WyDvBC8uH_EDU0fN0BlIYL0AA/viewform?usp=publish-editor">येथे तपशील जोडा</a>
+            </span>
+            <span class="lang-text">
+                🇮🇳 भुगतान का स्क्रीनशॉट, ID और तारीख <span class="email-highlight">Google Form</span> पर भेजें।
+                <a class="ref" href="https://docs.google.com/forms/d/e/1FAIpQLSe5e8l81YlQABe9aYN8GLx5-WyDvBC8uH_EDU0fN0BlIYL0AA/viewform?usp=publish-editor">विवरण यहाँ जोड़ें</a>
+            </span>
+        </div>
+
+        <button onclick="toggleImage()">
+            
+            <span id="btnText">Reveal QR / Payment Image</span>
+        </button>
+
+        <div id="wrapper" class="img-container">
+            <img id="myImage" src="{{url_for('static', filename='images/payment.jpeg')}}" alt="Payment Details">
+        </div>
+
+        <p class="hint">Your data is processed securely through encrypted channels.</p>
+    </div>
+
+    <script>
+        function toggleImage() {
+            const wrapper = document.getElementById("wrapper");
+            const btnText = document.getElementById("btnText");
+            
+            wrapper.classList.toggle("active");
+            
+            if (wrapper.classList.contains("active")) {
+                btnText.innerText = "Hide Payment Details";
+            } else {
+                btnText.innerText = "Reveal QR / Payment Image";
+            }
+        }
+    </script>
+
+</body>
+</html>

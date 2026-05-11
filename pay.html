@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Change this color to change the entire background */
+            --bg-color: #0f172a; 
+            --card-bg: #1e293b;
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            width: 90%;
+            max-width: 1100px;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        h2 {
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            text-align: left;
+            color: var(--accent);
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        thead tr {
+            border-bottom: 2px solid #334155;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #334155;
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Status Badge */
+        .status-pill {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn-pay {
+            background-color: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn-pay:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-dim);
+            border: 1px solid var(--text-dim);
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            color: white;
+            border-color: white;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .footer-actions {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <h2>Pending Loans</h2>
+        <p class="subtitle">Review and manage your outstanding loan applications.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Amount</th>
+                    <th>Duration</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>#{{row[0]}}</td>
+                    <td><strong>₹{{row[1]+row[6]}}</strong></td>
+                    <td>{{row[2]}} Months</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}} </td>
+                    <td>{{row[5]}}</td>
+                    <td><span class="status-pill">{{row[5]}}</span></td>
+                    <td><button class="btn-pay" onclick="pay()">PAY NOW</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="footer-actions">
+            <button class="btn-secondary" onclick="goto()">BACK TO DASHBOARD</button>
+        </div>
+    </div>
+
+    <script>
+        function pay() {
+            window.location.href = "/payloan";
+        }
+        function goto() {
+            window.location.href = '/dashboard';
+        }
+    </script>
+</body>
+</html>

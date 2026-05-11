@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Loan and Approval System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #2e7d32;
+            --accent-gold: #ffd700;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --text-dark: #2c3e50;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            background-attachment: fixed;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Hero Header Styling */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: clamp(24px, 5vw, 45px);
+            color: var(--primary-green);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #555;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 3px;
+            background: var(--primary-green);
+            transition: width 0.5s;
+            margin-top: 5px;
+        }
+
+        header:hover h2::after {
+            width: 100%;
+        }
+
+        /* Container & Table Styling */
+        .main-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 1000px;
+            animation: slideUp 0.8s ease-out;
+            margin-bottom: 50px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        th {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            background: white;
+            transition: background 0.3s;
+        }
+
+        tr:hover td {
+            background-color: #f1f8e9;
+        }
+
+        /* Disclaimer Section */
+        .disclaimer-box {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            border-radius: 5px;
+        }
+
+        .disclaimer-box p {
+            margin: 5px 0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Button Styling */
+        .btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .but {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .but:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(46, 125, 50, 0.4);
+            background: #1b5e20;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            table { font-size: 12px; }
+            th, td { padding: 10px 5px; }
+            .main-card { padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Farmer Loan and Approval System</h1>
+        <h2>Your Pending Loans</h2>
+    </header>
+
+    <div class="main-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Amount</th>
+                    <th>Duration</th>
+                    <th>Payment Mode</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in loans %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>₹ {{row[1]}}</td>
+                    <td>{{row[2]}} Months</td>
+                    <td>{{row[3]}}</td>
+                    <td>{{row[4]}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="disclaimer-box">
+            <p><strong>Note:</strong> If a submitted loan application is not visible, it has been rejected and removed from the system.</p>
+            <p><strong>सूचना:</strong> जर सादर केलेला कोणताही कर्ज अर्ज दिसत नसेल, तर तो अर्ज नाकारण्यात आला आहे.</p>
+            <p><strong>नोट:</strong> यदि कोई सबमिट किया गया ऋण आवेदन दिखाई नहीं देता है, तो इसका अर्थ है कि वह आवेदन अस्वीकृत कर दिया गया है।</p>
+        </div>
+
+        <div class="btn-container">
+            <button class="but" onclick="goto()">Go to Dashboard</button>
+        </div>
+    </div>
+
+    <script>
+        let userId = "{{ userid }}";
+        function goto(){
+            window.location.href='/dashboard?user=' + userId;
+        }
+    </script>
+</body>
+</html>

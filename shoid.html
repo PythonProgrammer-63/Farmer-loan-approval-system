@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send OTP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            width: 320px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #1d2671;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #c33764;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Email OTP</h2>
+
+    <form action="/showid" method="post">
+        <input type="email" name="email" placeholder="Enter your email" required>
+        <button type="submit" onclick="go()">Send OTP</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan System | Secure Access</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #38bdf8;
+            --bg-dark: #0f172a;
+            --glass: rgba(30, 41, 59, 0.7);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at top left, #1e293b, #0f172a);
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Abstract Background Elements */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 300px; height: 300px;
+            background: var(--primary);
+            filter: blur(150px);
+            opacity: 0.15;
+            top: 10%; left: 10%;
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            perspective: 1000px;
+        }
+
+        .auth-card {
+            background: var(--glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: #0f172a;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 10px 15px -3px rgba(56, 189, 248, 0.3);
+        }
+
+        .links-container {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .toggle-link {
+            font-size: 0.85rem;
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        .secondary-links {
+            display: flex;
+            gap: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .secondary-link {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+
+        .secondary-link:hover { color: white; }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hide logic */
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Login Form -->
+        <div id="loginSection" class="auth-card">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Enter your credentials to access your account</p>
+
+            <form action="/login" method="post">
+                <div class="form-group">
+                    <input type="text" name="mobile" placeholder="Mobile Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" name="id" placeholder="User ID" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <i class="fa-solid fa-eye toggle-icon" onclick="toggleVisibility('password', this)"></i>
+                </div>
+                {% if error %}
+                <h3 id="display">{{error}}</h3>
+                {%endif%}
+                <button type="submit">Sign In</button>
+            </form>
+
+            <div class="links-container">
+                <span class="toggle-link" onclick="toggleAuth()">Create New Account</span>
+                
+                <div class="secondary-links">
+                    <span class="secondary-link" onclick="location.href='/verification'">Forgot Password?</span>
+                    <span class="secondary-link" onclick="location.href='/showid'">Forgot ID?</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerSection" class="auth-card hidden">
+            <h2>Get Started</h2>
+            <p class="subtitle">Fill in the details to create your loan profile</p>
+
+            <form action="/register" method="post">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="mobile" placeholder="Mobile Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Create Password" required>
+                </div>
+                <button type="submit">Create Account</button>
+            </form>
+
+            <div class="links-container">
+                <span class="toggle-link" onclick="toggleAuth()">Already have an account? Login</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+        
+        function toggleAuth() {
+            const login = document.getElementById("loginSection");
+            const register = document.getElementById("registerSection");
+            
+            if (login.classList.contains("hidden")) {
+                login.classList.remove("hidden");
+                register.classList.add("hidden");
+            } else {
+                login.classList.add("hidden");
+                register.classList.remove("hidden");
+            }
+        }
+    </script>
+</body>
+</html>

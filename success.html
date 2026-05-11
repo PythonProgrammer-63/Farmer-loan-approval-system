@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Success</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Single solid color combination - Deep Navy */
+            background-color: #0f172a; 
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 400px;
+            color: #f8fafc;
+        }
+
+        .icon-box {
+            width: 70px;
+            height: 70px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 35px;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        p {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .button-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        #id-display {
+            margin-top: 25px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #3b82f6;
+            font-weight: bold;
+            min-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="icon-box">✓</div>
+        <h1>Success!</h1>
+        <p>Your registration is complete.</p>
+        
+        <div class="button-stack">
+            <button class="btn-primary" onclick="location.href='/form'">Go to Application</button>
+            <button class="btn-secondary" onclick="generateID()">Generate User ID</button>
+        </div>
+
+        <div id="id-display"></div>
+    </div>
+
+    <script>
+        function generateID() {
+            // Professional Pop-up
+            Swal.fire({
+                title: 'ID Confirmed',
+                text: 'User ID: {{user_id}}',
+                icon: 'success',
+                confirmButtonColor: '#3b82f6',
+                background: '#1e293b',
+                color: '#fff'
+            });
+
+            // Display ID on page with a simple fade-in
+            const el = document.getElementById('id-display');
+            el.style.opacity = 0;
+            el.innerHTML = "ID: {{user_id}}";
+            let opacity = 0;
+            const timer = setInterval(() => {
+                if (opacity >= 1) clearInterval(timer);
+                el.style.opacity = opacity;
+                opacity += 0.1;
+            }, 30);
+        }
+    </script>
+</body>
+</html>

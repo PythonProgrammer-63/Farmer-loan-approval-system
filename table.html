@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Loans | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0f172a; 
+            --accent-color: #38bdf8;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg);
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            font-weight: 300;
+            font-size: 2.5rem;
+            letter-spacing: 12px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            animation: fadeInDown 1s ease-out;
+            color: var(--accent-color);
+        }
+
+        hr.hori {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+            width: 0%;
+            margin-bottom: 30px;
+            animation: expandLine 1.5s ease-out forwards;
+        }
+
+        /* --- Search Bar Styling --- */
+        .search-container {
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 25px;
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 25px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        #searchInput:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Table Styling */
+        .table-container {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        td {
+            padding: 20px;
+            font-size: 0.95rem;
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        tr:hover td {
+            background: rgba(56, 189, 248, 0.05);
+            color: #fff;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes expandLine {
+            to { width: 60%; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Pending Loans</h2>
+    <hr class="hori">
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by ID, Type, or Mode..." onkeyup="filterTable()">
+    </div>
+
+    <div class="table-container">
+        <table id="loansTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Loan Type</th>
+                    <th>Amount</th>
+                    <th>Duration</th>
+                    <th>Mode</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>#{{row[0]}}</td>
+                    <td><strong>{{row[1]}}</strong></td>
+                    <td>₹{{row[2]}}</td>
+                    <td>{{row[3]}} Months</td>
+                    <td>{{row[4]}}</td>
+                    <td><span class="status-badge">{{row[5]}}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("loansTable");
+            const tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows (except the first which contains table headers)
+            for (let i = 1; i < tr.length; i++) {
+                let rowVisible = false;
+                const tdArray = tr[i].getElementsByTagName("td");
+                
+                // Check every cell in the row to see if it matches the search query
+                for (let j = 0; j < tdArray.length; j++) {
+                    const td = tdArray[j];
+                    if (td) {
+                        const txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            rowVisible = true;
+                            break;
+                        }
+                    }
+                }
+                
+                tr[i].style.display = rowVisible ? "" : "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

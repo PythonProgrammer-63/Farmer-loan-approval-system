@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Loan Approval System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --bg-dark: #020617;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            background-color: var(--bg-dark);
+            color: white;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(168, 85, 247, 0.1) 0%, transparent 40%);
+            overflow-x: hidden;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 6%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn-small {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-signin {
+            color: white;
+            border: 1px solid var(--border);
+            background: var(--glass);
+        }
+
+        .btn-signin:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 180px 6% 60px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 55px;
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: 0px;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 50px;
+        }
+
+        /* --- DIGITAL IMPORTANCE SECTION --- */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 0 6% 100px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .info-card {
+            background: var(--glass);
+            padding: 45px;
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .info-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .info-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .info-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Background Bloom */
+        .bloom {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: var(--primary);
+            filter: blur(180px);
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="bloom" style="top: -200px; left: -200px;"></div>
+    <div class="bloom" style="bottom: -200px; right: -200px;"></div>
+
+    <nav>
+        <div class="logo">FarmerLoan.io</div>
+        <div class="nav-actions">
+            <a class="btn-small btn-signin" onclick="login()">Login</a>
+            <a class="btn-small btn-login" onclick="reg()">Apply Now</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h2>Farmer Loan Approval System <br><span style="color:var(--primary)"></span></h2>
+        <p>Bridging the gap between traditional farming and modern finance. Our digital-first approach ensures speed, accessibility, and absolute security for every agricultural entrepreneur.</p>
+    </header>
+
+    <div class="section-title">
+        <h3>Why Apply Digitally?</h3>
+        <p>The safest and fastest way to fuel your harvest.</p>
+    </div>
+
+    <section class="info-grid">
+        <!-- Box 1 -->
+        <div class="info-card">
+            <div class="icon-box">01</div>
+            <h3>Bank-Level Security</h3>
+            <p>Every application is processed through <span class="highlight">256-bit SSL encryption</span>. Your land documents and personal financial data are stored in secure vaults, protecting you from identity theft and fraud.</p>
+        </div>
+
+        <!-- Box 2 -->
+        <div class="info-card">
+            <div class="icon-box" style="background: var(--secondary); box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);">02</div>
+            <h3>Eliminate Paperwork</h3>
+            <p>Digitizing your loan application means no more physical queues or lost documents. Upload your KYC once and track your <span class="highlight">Real-Time Approval Status</span> from your mobile device anywhere.</p>
+        </div>
+
+        <!-- Box 3 -->
+        <div class="info-card">
+            <div class="icon-box">03</div>
+            <h3>Transparent Processing</h3>
+            <p>Digital trails prevent hidden fees and middleman interference. Our <span class="highlight">Automated Credit Scoring</span> provides fair assessments based on merit, ensuring the fastest path to disbursement.</p>
+        </div>
+    </section>
+    <script>
+        function login(){
+            window.location.href="/home";
+        }
+        function reg(){
+            window.location.href="/reg";
+        }
+        
+    </script>
+
+</body>
+</html>

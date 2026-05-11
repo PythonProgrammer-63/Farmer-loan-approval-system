@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body{
+                background: linear-gradient(145deg, #f58311, #0dedd7, #e10f0f, #bbed3e);
+                background-size: 600% 1000%;
+                animation: gradientMove 10s ease infinite;
+                justify-items:center;
+                align-content: center;
+            }
+            @keyframes gradientMove {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+
+            h2{
+                padding: 20px;
+                letter-spacing:20px;
+                font-size:50px;
+                animation: zoom 3s ease;
+                transition:0.3s;
+                background: linear-gradient(to left,red,darkblue);
+                background-size: 200% auto;
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                color: transparent;
+                text-shadow:0.3px 0.3px 5px ;
+            }
+            
+            h2:hover{
+            transform: scale(1.1);
+            color: rgb(232, 224, 224);
+            }
+            @keyframes zoom{
+                from{
+                    opacity: 0;
+                    transform: zoom;
+                }
+                to{
+                    opacity: 1;
+                    transform: zoom;
+                }
+            }
+            table th{
+                padding:20px;
+                text-align:center;
+                font-size: 30px;
+                letter-spacing:5px;
+            }
+            table td{
+                padding:20px;
+                text-align: center;
+                font-size:20px
+            }
+            table{
+                animation:moveup 2s linear;
+            }
+            @keyframes moveup{
+                from {
+                    opacity : 0;
+                    transform: translateY(100%);
+                }
+                to{
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            hr.hori{
+                border: 3px solid black;
+                width: 0%;
+                margin: 10px 0 70px 0;
+                animation: expandLine 2s ease forwards;
+            }
+            @keyframes expandLine{
+                from{
+                    width: 0%;
+                }
+                to{
+                    width: 50%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h2>PENDING LOANS</h2>
+        <hr class="hori">
+        <table class="table" border="1">
+                <tr>
+                    <th>Id</th>
+                    <th>Loan Type</th>
+                    <th>Amount</th>
+                    <th>Duration</th>
+                    <th>Payment Mode</th>
+                    <th>Status</th>
+                </tr>
+                {% for row in data %}
+                <tr>
+                    <td>{{row[0]}}</td>
+                    <td>{{row[1]}} </td>
+                    <td>{{row[2]}} rupees</td>
+                    <td>{{row[3]}} months</td>
+                    <td>{{row[4]}}</td>
+                    <td>{{row[5]}}</td>
+                </tr>
+                {% endfor %}
+        </table>
+    </body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nexus Admin | Loan Intelligence</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #10b981;
+            --accent-glow: rgba(16, 185, 129, 0.4);
+            --bg: #020617;
+            --card: rgba(15, 23, 42, 0.6);
+            --border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --danger: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header Styling */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 32px;
+            padding: 0 10px;
+        }
+
+        .brand-zone h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            background: linear-gradient(135deg, #fff 0%, #64748b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .badge-version {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            border: 1px solid var(--accent);
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        #searchInput {
+            width: 100%;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: white;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        /* The Glass Card */
+        .glass-card {
+            background: var(--card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 18px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Modern Status Pills */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+        .pending { background: rgba(245, 158, 11, 0.1); color: #fbbf24; }
+        .pending .status-dot { background: #fbbf24; box-shadow: 0 0 8px #fbbf24; }
+
+        .approved { background: rgba(16, 185, 129, 0.1); color: var(--accent); }
+        .approved .status-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+
+        /* Actions */
+        .btn {
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-approve { background: var(--accent); color: var(--bg); }
+        .btn-approve:hover { transform: translateY(-2px); box-shadow: 0 4px 12px var(--accent-glow); }
+
+        .btn-reject { background: transparent; color: var(--text-primary); border: 1px solid var(--border); margin-left: 8px; }
+        .btn-reject:hover { background: rgba(239, 68, 68, 0.1); color: var(--danger); border-color: var(--danger); }
+
+        /* Footer */
+        .footer-nav {
+            margin-top: 32px;
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .action-link {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .action-link:hover {
+            background: white;
+            color: var(--bg);
+            border-color: white;
+        }
+
+        .id-cell { font-family: 'Monaco', monospace; color: var(--accent); font-weight: 600; }
+        .amount-cell { font-weight: 700; color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="brand-zone">
+                <p style="color: var(--accent); font-size: 12px; font-weight: 700; margin: 0 0 4px 0; text-transform: uppercase;">Management Console</p>
+                <h2>Loan Manager</h2>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Filter by name or ID..." onkeyup="filterTable()">
+            </div>
+        </header>
+
+        <div class="glass-card">
+            <table id="loanTable">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Borrower</th>
+                        <th>Asset Type</th>
+                        <th>Principal</th>
+                        <th>Term</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Authorization</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for loan in loans %}
+                    <tr>
+                        <td class="id-cell">#{{ loan[1] }}</td>
+                        <td>
+                            <div style="font-weight: 600;">{{ loan[2] }}</div>
+                            <div style="font-size: 11px; color: var(--text-secondary);">Verified Client</div>
+                        </td>
+                        <td>{{ loan[3] }}</td>
+                        <td class="amount-cell">₹{{ "{:,}".format(loan[4]|int) if loan[4] else "0" }}</td>
+                        <td>{{ loan[5] }} <span style="color: var(--text-secondary); font-size: 12px;">Mo.</span></td>
+                        <td>
+                            <div class="status {% if loan[6] == 'Approved' %}approved{% else %}pending{% endif %}">
+                                <span class="status-dot"></span>
+                                {{ loan[6] if loan[6] else 'Awaiting' }}
+                            </div>
+                        </td>
+                        <td style="text-align: right;">
+                            {% if loan[6] == 'Pending' or loan[6] == None %}
+                                <a href="/update_status/{{ loan[0] }}/Approved" class="btn btn-approve">Approve</a>
+                                <a href="/update_status/{{ loan[0] }}/Rejected" class="btn btn-reject">Reject</a>
+                            {% else %}
+                                <a href="/delete_loan/{{ loan[0] }}" class="btn btn-reject" onclick="return confirm('Archive record #{{ loan[1] }}?')">Archive</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer-nav">
+            <button class="action-link" onclick="location.href='/table'">
+                View Full Logs
+            </button>
+            <button class="action-link" onclick="location.reload()" style="background: var(--accent); color: var(--bg); border: none;">
+                Sync Database
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function filterTable() {
+            const input = document.getElementById("searchInput");
+            const filter = input.value.toUpperCase();
+            const table = document.getElementById("loanTable");
+            const tr = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < tr.length; i++) {
+                const tdName = tr[i].getElementsByTagName("td")[1];
+                const tdID = tr[i].getElementsByTagName("td")[0];
+                if (tdName || tdID) {
+                    const txtValue = (tdName.textContent || tdName.innerText) + (tdID.textContent || tdID.innerText);
+                    tr[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Secure Banking</title>
+    <!-- 1. Added Font Awesome for the Eye Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #003366;
+            --accent-gold: #c5a059;
+            --success-green: #2ecc71;
+            --error-red: #e74c3c;
+            --text-gray: #4a4a4a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)), 
+                        url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-top: 6px solid var(--accent-gold);
+            backdrop-filter: blur(10px);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .lock-icon { font-size: 2.5rem; margin-bottom: 10px; }
+
+        .header h2 {
+            color: var(--primary-blue);
+            font-size: 1.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 0.85rem;
+            color: var(--success-green);
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        /* 2. New Password Wrapper Styles */
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 45px 12px 15px; /* Added right padding for icon */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--primary-blue);
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .toggle-icon:hover { opacity: 1; }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 51, 102, 0.1);
+        }
+
+        .mismatch { border-color: var(--error-red) !important; }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .btn-primary { background: var(--primary-blue); color: white; }
+        .btn-primary:hover { background: #002244; transform: translateY(-1px); }
+        .btn-secondary { background: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue); }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.7rem;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <div class="lock-icon">🛡️</div>
+            <h2>Bank Details Form</h2>
+            <p>● End-to-End Encrypted Session</p>
+        </div>
+        
+        <form action="/dbank" method="POST" id="bankForm">
+            <div class="input-section">
+                <label>Account Details</label>
+                
+                <!-- Account Number Wrapper -->
+                <div class="input-wrapper">
+                    <input type="password" id="acc" name="account_no" placeholder="Account Number" required>
+                    <i class="fa-solid fa-eye toggle-icon" onclick="toggleVisibility('acc', this)"></i>
+                </div>
+
+                <!-- Confirm Account Wrapper -->
+                <div class="input-wrapper">
+                    <input type="password" id="confirm_acc" name="con_account_no" placeholder="Confirm Account Number" required>
+                    <i class="fa-solid fa-eye toggle-icon" onclick="toggleVisibility('confirm_acc', this)"></i>
+                </div>
+                
+                <label>Bank Identifiers</label>
+                <input type="text" id='ifsc' name="ifsc" placeholder="IFSC Code" style="text-transform:uppercase" required>
+                <input type="text" name="bank_name" placeholder="Full Bank Name" required>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn-primary">VERIFY & PROCEED</button>
+                <button type="button" class="btn-secondary" onclick="window.location.href='/dashboard'">RETURN TO DASHBOARD</button>
+            </div>
+        </form>
+
+        <div class="footer">
+            &copy; 2026 Secure Banking Services | PCI-DSS Compliant
+        </div>
+    </div>
+
+    <script>
+        // 3. Toggle Visibility Logic
+        function toggleVisibility(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+
+        // Validation Logic
+        const acc = document.getElementById('acc');
+        const confirmAcc = document.getElementById('confirm_acc');
+
+        function validateAccounts() {
+            if (acc.value !== confirmAcc.value && confirmAcc.value.length > 0) {
+                confirmAcc.classList.add('mismatch');
+            } else {
+                confirmAcc.classList.remove('mismatch');
+            }
+        }
+
+        acc.addEventListener('input', validateAccounts);
+        confirmAcc.addEventListener('input', validateAccounts);
+
+
+        //IFSC Validation
+        const ifsc = document.getElementById('ifsc');
+        
+
+        function validateAccountss() {
+            if ( ifsc.value.length > 11 &&ifsc.value.length<11) {
+                ifsc.classList.add('mismatch');
+            } else {
+                ifsc.classList.remove('mismatch');
+            }
+        }
+
+        ifsc.addEventListener('input', validateAccountss);
+    document.getElementById('bankForm').addEventListener('submit', function(e) {
+
+    if (acc.value !== confirmAcc.value) {
+
+        e.preventDefault();
+        alert("Account numbers do not match.");
+
+        return;
+    }
+
+    if (ifsc.value.length != 11) {
+
+        e.preventDefault();
+        alert("IFSC code must contain exactly 11 characters.");
+    }
+});
+    </script>
+</body>
+</html>

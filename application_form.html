@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Loan Approval System</title>
+
+```
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-image: url("https://hectavisionbiosciences.com/wp-content/uploads/2025/07/360_F_673592233_GRdQaHtfPN3t9NvLEn4V7jscQlIQLiUi.jpg");
+        background-size: cover;
+        background-attachment: fixed;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 40px;
+    }
+
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        padding: 40px;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 850px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    h2 {
+        color: #168f1e;
+        font-size: 2rem;
+    }
+
+    header p {
+        color: #666;
+        font-size: 0.95rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    h3 {
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        color: #222;
+    }
+
+    .no-data {
+        text-align: center;
+        color: red;
+        font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+```
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<header>
+    <h2>Farmer Loan Portal</h2>
+    <p>Please verify your details below</p>
+</header>
+
+{% if data %}
+    
+    <div class="form-grid">
+
+        <div class="form-group">
+            <label>Registration ID</label>
+            <h3>{{ data[0] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Aadhar Number</label>
+            <h3>{{ data[12] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>First Name</label>
+            <h3>{{ data[1] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Middle Name</label>
+            <h3>{{ data[2] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Last Name</label>
+            <h3>{{ data[3] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Age</label>
+            <h3>{{ data[4] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <h3>{{ data[5] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <h3>{{ data[6] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Mobile Number</label>
+            <h3>{{ data[14] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Village</label>
+            <h3>{{ data[7] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Taluka</label>
+            <h3>{{ data[8] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>District</label>
+            <h3>{{ data[9] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>State</label>
+            <h3>{{ data[10] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Pincode</label>
+            <h3>{{ data[11] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Occupation</label>
+            <h3>{{ data[13] }}</h3>
+        </div>
+
+        <div class="form-group">
+            <label>Annual Income</label>
+            <h3>₹ {{ data[15] }}</h3>
+        </div>
+        
+    </div>
+    
+    
+    <button class="submit-btn" onclick="goto()">GO TO DASHBOARD</button>
+{% else %}
+    <p class="no-data">No application data found.</p>
+    <button onclick='gotoapp()'>GOTO APPLICATION FORM</button> 
+{% endif %}
+
+</div>
+<script>
+    function goto(){
+        window.location.href='/dashboard';
+    }
+    function gotoapp(){
+        window.location.href='/form';
+    }
+</script>
+
+</body>
+</html>
